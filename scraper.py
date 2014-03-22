@@ -73,3 +73,34 @@ if __name__ == '__main__':
     for car in cars:
         print car
 
+    # DA TODO:
+    # get the VIN from queries like this:  http://www.cars.com/go/search/detail.jsp?listingId=125768592&listingRecNum=0
+    # where the listing id comes from:
+    #    
+    # <div class="col8 align-right">
+    #   <h4 class="price">
+    #     <span class="priceSort">$42,300</span>
+    #   </h4>
+    #   <div class="mileage">
+    #     <span class="milesSort">5 mi.</span>
+    #   </div>
+    #
+    # </div>
+    # <div class="clearfix">
+    #   <span></span>
+    # </div>
+    #
+    # <div class="listing-options-row">
+    #   <div class="col8 js-save-vehicle-wrap row"
+    #     id="saved-anchor-601639777">
+    #
+    #       <label class="float-left"> <input type="checkbox"
+    #         class="js-save-vehicle" data-js="save-vehicle"
+    #         data-listing-id="601639777"
+
+    # work out how to make a scatter plot of the entries:
+    #   y axis: price
+    #   x axis: miles travelled
+    #   color coded based on year and trim?
+    #   NEW full price values as well (pull from gtrlife)
+

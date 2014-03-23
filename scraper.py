@@ -5,6 +5,7 @@ import urllib2
 import argparse
 from bs4 import BeautifulSoup
 from bs4 import element
+import matplotlib.pyplot as plt
 
 
 class car:
@@ -70,8 +71,17 @@ if __name__ == '__main__':
     l_cars_parser = cars_parser()
     cars = l_cars_parser.load(price_min=args.price_min,
                               price_max=args.price_max)
+
+    prices = []
+    miles = []
     for car in cars:
+        prices.append(car.price)
+        miles.append(car.mileage)
         print car
+
+    plt.scatter(prices, miles)
+    plt.show()
+    
 
     # DA TODO:
     # get the VIN from queries like this:  http://www.cars.com/go/search/detail.jsp?listingId=125768592&listingRecNum=0

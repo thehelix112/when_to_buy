@@ -55,6 +55,8 @@ class cars_parser:
             price_and_mileage = i_vehicle_info.findNextSibling('div', {'class': 'col8 align-right'})
             l_car.price = str(price_and_mileage.find('span', {'class': 'priceSort'}).string).translate(None, '$, ')
             l_car.mileage = str(price_and_mileage.find('span', {'class': 'milesSort'}).string).translate(None, ', mi.')
+            if l_car.mileage == "-":
+                l_car.mileage = 0
             cars.append(l_car)
 
         return cars
@@ -62,8 +64,8 @@ class cars_parser:
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Dave's When to Buy Tool")
-    parser.add_argument('--price-min', type=str, default='0',
-            help='The minimum price (default 0)')
+    parser.add_argument('--price-min', type=str, default='75000',
+            help='The minimum price (default 75000)')
     parser.add_argument('--price-max', type=str, default='85000',
             help='The maximum price (default 85000)')
     args = parser.parse_args()
@@ -72,14 +74,35 @@ if __name__ == '__main__':
     cars = l_cars_parser.load(price_min=args.price_min,
                               price_max=args.price_max)
 
-    prices = []
-    miles = []
-    for car in cars:
-        prices.append(car.price)
-        miles.append(car.mileage)
-        print car
+    year_colour = {2013: 'r',
+                   2014: 'b',
+                   2015: 'g'}
+    trim_shape = {"premium": "o",
+                  "black edition": "^"}
 
-    plt.scatter(prices, miles)
+    for year, colour in year_colour.iteritems():
+
+        for trim, shape in trim_shape.iteritems():
+
+            prices = []
+            miles = []
+            for car in cars:
+
+                if (int(car.year) == year and
+                    car.trim.lower() == trim.lower()):
+                    prices.append(car.price)
+                    miles.append(car.mileage)
+                    print car
+
+            #print prices
+            #print miles
+            #print "%c%c" % (colour, shape)
+            plt.plot(prices, miles, "%c%c" % (colour, shape), label="%s %s" % (year, trim))
+
+    #plt.legend(loc="upper left")
+
+    plt.axis([int(args.price_min), int(args.price_max), 0, 25000])
+
     plt.show()
     
 

@@ -20,9 +20,9 @@ class car:
 
     def __str__(self):
         return "%s %s %s %s - %s %s mi $%s" % (self.year,
-                                               self.make, 
-                                               self.model, 
-                                               self.trim, 
+                                               self.make,
+                                               self.model,
+                                               self.trim,
                                                self.colour,
                                                self.mileage,
                                                self.price)
@@ -101,15 +101,17 @@ if __name__ == '__main__':
 
     #plt.legend(loc="upper left")
 
+    plt.xlabel("Price ($)")
+    plt.ylabel("Miles")
     plt.axis([int(args.price_min), int(args.price_max), 0, 25000])
 
     plt.show()
-    
+
 
     # DA TODO:
     # get the VIN from queries like this:  http://www.cars.com/go/search/detail.jsp?listingId=125768592&listingRecNum=0
     # where the listing id comes from:
-    #    
+    #
     # <div class="col8 align-right">
     #   <h4 class="price">
     #     <span class="priceSort">$42,300</span>

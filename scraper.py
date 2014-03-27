@@ -68,6 +68,8 @@ if __name__ == '__main__':
             help='The minimum price (default 75000)')
     parser.add_argument('--price-max', type=str, default='85000',
             help='The maximum price (default 85000)')
+    parser.add_argument('--discount', type=str, default='no',
+            help='Plot discount from MSRP rather than price')
     args = parser.parse_args()
 
     l_cars_parser = cars_parser()
@@ -80,30 +82,42 @@ if __name__ == '__main__':
     trim_shape = {"premium": "o",
                   "black edition": "^"}
 
+    code_msrp = {"ro": 97820,
+                 "r^": 107320,
+                 "bo": 100590,
+                 "b^": 110300}
+
     for year, colour in year_colour.iteritems():
 
         for trim, shape in trim_shape.iteritems():
 
+            code = "%c%c" % (colour, shape)
             prices = []
             miles = []
             for car in cars:
 
                 if (int(car.year) == year and
                     car.trim.lower() == trim.lower()):
-                    prices.append(car.price)
+                    if args.discount != "no":
+                        prices.append(code_msrp[code] - int(car.price))
+                    else:
+                        prices.append(car.price)
                     miles.append(car.mileage)
                     print car
 
             #print prices
             #print miles
             #print "%c%c" % (colour, shape)
-            plt.plot(prices, miles, "%c%c" % (colour, shape), label="%s %s" % (year, trim))
+            plt.plot(prices, miles, code, label="%s %s" % (year, trim))
 
-    #plt.legend(loc="upper left")
+    plt.legend(loc="upper left")
 
-    plt.xlabel("Price ($)")
+    if args.discount != "no":
+        plt.xlabel("Discount from MSRP ($)")
+    else:
+        plt.xlabel("Price ($)")
+        plt.axis([int(args.price_min), int(args.price_max), 0, 25000])
     plt.ylabel("Miles")
-    plt.axis([int(args.price_min), int(args.price_max), 0, 25000])
 
     plt.show()
 
